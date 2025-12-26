@@ -1,2 +1,3 @@
-# homestead-os
-self-reliance planning system
+# Homestead OS
+
+Starter codebase for Homestead OS Planner Engine.
