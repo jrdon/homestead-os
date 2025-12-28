@@ -1,7 +1,3 @@
 
-"dependencies": {
-  "react": "^18.x.x",
-  "react-dom": "^18.x.x",
-  "react-scripts": "5.0.1",
-  ...
-}
+cd frontend
+npm install react-scripts
