@@ -1,4 +1,4 @@
-// React App placeholder
+
 "dependencies": {
   "react": "^18.x.x",
   "react-dom": "^18.x.x",
