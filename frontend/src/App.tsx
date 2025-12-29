@@ -1,60 +1,43 @@
-import React, { useEffect, useState } from "react";
-import "./App.css";
-
-interface Activity {
-  name: string;
-  category: string;
-  timeOfDay: string;
-  priority: number;
-}
+import { useState } from "react";
 
 function App() {
-  const [activities, setActivities] = useState<Activity[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [message, setMessage] = useState("Loading backend...");
 
-  const API_URL = "https://homestead-os.onrender.com";
-
-  const fetchActivities = async () => {
+  // Test the backend connection
+  const checkBackend = async () => {
     try {
-      const res = await fetch(`${API_URL}/activities`);
-      if (!res.ok) throw new Error("Failed to fetch activities");
+      const res = await fetch("https://homestead-os.onrender.com/api/health");
       const data = await res.json();
-      setActivities(data.activities);
+      setMessage(data.status ?? "Backend connected");
     } catch (err) {
-      setError("Unable to load activities from backend");
-      console.error(err);
-    } finally {
-      setLoading(false);
+      setMessage("Backend not responding");
     }
   };
 
-  useEffect(() => {
-    fetchActivities();
-  }, []);
-
   return (
-    <div className="App">
-      <h1>Homestead OS Planner</h1>
-
-      {loading && <p>Loading...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
-      {!loading && activities.length === 0 && <p>No activities found</p>}
-
-      <ul>
-        {activities.map((activity, index) => (
-          <li key={index}>
-            <strong>{activity.name}</strong> — {activity.category}  
-            <span> ({activity.timeOfDay})</span>
-            <span> — Priority: {activity.priority}</span>
-          </li>
-        ))}
-      </ul>
-
-      <button onClick={fetchActivities}>Refresh</button>
+    <div style={styles.container}>
+      <h1>Homestead OS</h1>
+      <p>{message}</p>
+      <button onClick={checkBackend} style={styles.button}>
+        Check Backend Status
+      </button>
     </div>
   );
 }
+
+const styles = {
+  container: {
+    textAlign: "center",
+    fontFamily: "Arial, sans-serif",
+    padding: "40px"
+  },
+  button: {
+    padding: "10px 16px",
+    fontSize: "16px",
+    cursor: "pointer",
+    borderRadius: "6px",
+    border: "1px solid #222"
+  }
+};
 
 export default App;
